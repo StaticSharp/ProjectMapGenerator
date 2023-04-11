@@ -14,14 +14,20 @@ namespace StaticSharpProjectMapGenerator
     {
         public ProjectMap CreatePageTree(Compilation compilation) // TODO: review ProjectMap vs PageTree
         {
+            //// finding root (by protonode)
+
             var protonode = compilation.GetSymbolsWithName("ProtoNode").SingleOrDefault();
             if (protonode == null) {
                 throw new Exception("ProtoNode not found or multiple ProtoNode's"); // TODO: notify user of exceptions
             }
 
             var rootNamespace = protonode.ContainingNamespace;
-            var projectMap = new ProjectMap(compilation.AssemblyName, rootNamespace.Name);
-            
+            // TODO: relative? partial?
+            var rootFilePath = protonode.DeclaringSyntaxReferences.First().GetSyntax().SyntaxTree.FilePath;
+            var pathToRoot = Path.GetDirectoryName(Path.GetDirectoryName(rootFilePath));  // TODO: remove this from others files names?
+
+            var projectMap = new ProjectMap(compilation.AssemblyName, rootNamespace.Name, pathToRoot);
+
             //// find representatives
             var allSymbols = compilation.GetSymbolsWithName(_ => true);
             var typeSymbols = allSymbols.OfType<INamedTypeSymbol>(); // TODO: optimization possible - only visit rootNamespace descendents
