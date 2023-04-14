@@ -14,7 +14,7 @@ namespace StaticSharpProjectMapGenerator.Models
 
         public string Name { get; }
 
-        public IEnumerable<string> PathSegments { get; }
+        public IEnumerable<string> PathSegments { get; } // TODO: not in use now, remove? Constructed in TS from page names
 
         public List<PageMap> ChildPages { get; set;} = new List<PageMap>();
 

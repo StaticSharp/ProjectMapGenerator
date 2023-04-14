@@ -26,7 +26,18 @@ namespace StaticSharpProjectMapGenerator
             var rootFilePath = protonode.DeclaringSyntaxReferences.First().GetSyntax().SyntaxTree.FilePath;
             var pathToRoot = Path.GetDirectoryName(Path.GetDirectoryName(rootFilePath));  // TODO: remove this from others files names?
 
-            var projectMap = new ProjectMap(compilation.AssemblyName, rootNamespace.Name, pathToRoot);
+            var rootContainingNamespaces = new List<string>();
+            if (!rootNamespace.IsGlobalNamespace) {
+                var currentOuterNamespace = rootNamespace.ContainingNamespace;
+                while (!currentOuterNamespace.IsGlobalNamespace) {
+                    rootContainingNamespaces.Add(currentOuterNamespace.Name);
+                    currentOuterNamespace = currentOuterNamespace.ContainingNamespace;
+                }
+            }
+
+            rootContainingNamespaces.Reverse();
+            var rootContainingNamespaceString = string.Join(".", rootContainingNamespaces);
+            var projectMap = new ProjectMap(compilation.AssemblyName, rootNamespace.Name, pathToRoot, rootContainingNamespaceString);            
 
             //// find representatives
             var allSymbols = compilation.GetSymbolsWithName(_ => true);
