@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 
@@ -42,12 +43,12 @@ namespace StaticSharpProjectMapGenerator
             //// find representatives
             var allSymbols = compilation.GetSymbolsWithName(_ => true);
             var typeSymbols = allSymbols.OfType<INamedTypeSymbol>(); // TODO: optimization possible - only visit rootNamespace descendents
-            var representativesSymbols = typeSymbols.Where(_ => _.GetAttributes()
+            var pageSymbols = typeSymbols.Where(_ => _.GetAttributes()
                 .Any(__ => __.AttributeClass.ConstructedFrom.ToString() == "StaticSharp.RepresentativeAttribute"));
             ///
 
             // construct tree
-            foreach (var pageSymbol in representativesSymbols) {
+            foreach (var pageSymbol in pageSymbols) {
                 var currentNamespace = pageSymbol.ContainingNamespace;
 
                 IEnumerable<string> pagePathSegments = new List<string>();
@@ -70,7 +71,7 @@ namespace StaticSharpProjectMapGenerator
                 
                 if (currentNamespace == null) {
                     // TODO: notify user
-                    SimpleLogger.Log($"WARNING: Representative not under root. Representative type: {pageSymbol.Name}");
+                    SimpleLogger.Log($"WARNING: Page not under root. Page type: {pageSymbol.Name}");
                     break;
                 }
 
@@ -88,11 +89,52 @@ namespace StaticSharpProjectMapGenerator
                 var page = projectMap.GetOrCreatePageByPath(pagePathSegments);
                 page.Pages.Add( new PageMap {
                     Name = pageSymbol.Name,
-                    FilePath = filePath//.Replace("\\", "\\\\")
+                    FilePath = filePath,
+                    PageCsDescription = CreatePageCsDescription(pageSymbol)
                 });
             }
 
             return projectMap;
         }
+
+        protected PageCsDescription CreatePageCsDescription(INamedTypeSymbol pageSymbol)
+        {
+
+            var classSyntaxReference = pageSymbol.DeclaringSyntaxReferences.First();
+
+            var fileSyntaxNode = classSyntaxReference.SyntaxTree.GetRoot();
+
+            var classSyntaxNode = classSyntaxReference.GetSyntax();
+            var className = classSyntaxNode.ChildTokens().First(_ => _.RawKind == 8508); // TODO: 8508?!!! == IdentifierToken?
+            //declarationSyntaxNode.GetAnnotatedTokens("")
+
+
+            var exclussiveWrapper = GetExclusiveWrapper(classSyntaxNode);
+
+            var result = new PageCsDescription {
+                ClassDefinition = classSyntaxNode.ToFileTextRange(),
+                ClassName = className.ToFileTextRange(),
+                ProposedDefinitionLine = fileSyntaxNode.LineSpan().EndLinePosition.Line + 1,
+                ProposedDefinitionColumn = 0,
+
+                FileScopedNamespace = null,
+
+                ExclusiveNamespaceWrapper = exclussiveWrapper.ToFileTextRange()
+            };
+
+            return result;
+        }
+
+        protected SyntaxNode GetExclusiveWrapper(SyntaxNode target) {
+            var sibblings = target.Parent.ChildNodes();
+            if (sibblings.Count() == 2 ) { // namespace Idendificator and self // TODO: exclude usings
+                return GetExclusiveWrapper(target.Parent);
+            } else {
+                return target;
+            }
+        }
     }       
+
+    
+
 }

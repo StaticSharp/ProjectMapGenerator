@@ -1,4 +1,7 @@
-﻿namespace StaticSharpProjectMap.TestTarget
+﻿global using StaticSharp;
+global using StaticSharp.Tree;
+
+namespace StaticSharpProjectMap.TestTarget
 {
     public class Program
     {
