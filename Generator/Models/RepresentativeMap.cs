@@ -4,7 +4,7 @@ using System.Text;
 
 namespace StaticSharpProjectMapGenerator.Models
 {
-    public class RepresentativeMap
+    public class PageMap
     {
         public string Name { get; set; }
 

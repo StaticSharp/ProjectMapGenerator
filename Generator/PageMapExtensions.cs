@@ -8,7 +8,7 @@ namespace StaticSharpProjectMapGenerator
 {
     public static class PageMapExtensions
     {
-        public static PageMap GetPageByPath(this ProjectMap _this, IEnumerable<string> pagePathSegments)
+        public static RouteMap GetPageByPath(this ProjectMap _this, IEnumerable<string> pagePathSegments)
         {
             if (!pagePathSegments.Any() || _this.Root.Name != pagePathSegments.First()) {
                 return null;
@@ -16,7 +16,7 @@ namespace StaticSharpProjectMapGenerator
 
             var currentPage = _this.Root;
             foreach (var pathSegment in pagePathSegments.Skip(1)) {
-                currentPage = currentPage.ChildPages.FirstOrDefault(_ => _.Name == pathSegment);
+                currentPage = currentPage.ChildRoutes.FirstOrDefault(_ => _.Name == pathSegment);
                 if (currentPage == null) {
                     return null;
                 }
@@ -26,7 +26,7 @@ namespace StaticSharpProjectMapGenerator
         }
 
         // Returns last page in the path, new or existing
-        public static PageMap GetOrCreatePageByPath(this ProjectMap _this, IEnumerable<string> pagePathSegments)
+        public static RouteMap GetOrCreatePageByPath(this ProjectMap _this, IEnumerable<string> pagePathSegments)
         {
             if (!pagePathSegments.Any()) {
                 return null;
@@ -38,10 +38,10 @@ namespace StaticSharpProjectMapGenerator
 
             var currentPage = _this.Root;
             foreach (var pathSegment in pagePathSegments.Skip(1)) {
-                var nextPage = currentPage.ChildPages.FirstOrDefault(_ => _.Name == pathSegment);
+                var nextPage = currentPage.ChildRoutes.FirstOrDefault(_ => _.Name == pathSegment);
                 if (nextPage == null) {
-                    nextPage = new PageMap(pathSegment, pagePathSegments);
-                    currentPage.ChildPages.Add(nextPage);
+                    nextPage = new RouteMap(pathSegment/*, pagePathSegments*/);
+                    currentPage.ChildRoutes.Add(nextPage);
                 }
 
                 currentPage = nextPage;

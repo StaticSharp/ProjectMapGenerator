@@ -47,8 +47,8 @@ namespace StaticSharpProjectMapGenerator
             ///
 
             // construct tree
-            foreach (var representativeSymbol in representativesSymbols) {
-                var currentNamespace = representativeSymbol.ContainingNamespace;
+            foreach (var pageSymbol in representativesSymbols) {
+                var currentNamespace = pageSymbol.ContainingNamespace;
 
                 IEnumerable<string> pagePathSegments = new List<string>();
 
@@ -70,24 +70,24 @@ namespace StaticSharpProjectMapGenerator
                 
                 if (currentNamespace == null) {
                     // TODO: notify user
-                    SimpleLogger.Log($"WARNING: Representative not under root. Representative type: {representativeSymbol.Name}");
+                    SimpleLogger.Log($"WARNING: Representative not under root. Representative type: {pageSymbol.Name}");
                     break;
                 }
 
                 pagePathSegments = pagePathSegments.Prepend(rootNamespace.Name);
 
                 // TODO: relative? partial?
-                var filePath = representativeSymbol.DeclaringSyntaxReferences.First().GetSyntax().SyntaxTree.FilePath;
+                var filePath = pageSymbol.DeclaringSyntaxReferences.First().GetSyntax().SyntaxTree.FilePath;
 
-                if (string.IsNullOrEmpty(representativeSymbol.Name)) {
+                if (string.IsNullOrEmpty(pageSymbol.Name)) {
                     // TODO: realy strange hack: this code never executes,
                     // though without it Name=="" in a specific case: when appending chars to it's end without saving
-                    Console.WriteLine(JsonSerializer.Serialize(representativeSymbol));
+                    Console.WriteLine(JsonSerializer.Serialize(pageSymbol));
                 }
 
                 var page = projectMap.GetOrCreatePageByPath(pagePathSegments);
-                page.Representatives.Add( new RepresentativeMap {
-                    Name = representativeSymbol.Name,
+                page.Pages.Add( new PageMap {
+                    Name = pageSymbol.Name,
                     FilePath = filePath//.Replace("\\", "\\\\")
                 });
             }

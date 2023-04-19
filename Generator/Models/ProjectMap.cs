@@ -9,7 +9,7 @@ namespace StaticSharpProjectMapGenerator.Models
         public ProjectMap(string projectName, string rootPageName, string pathToRoot, string rootContainingNamespaceString)
         {
             Name = projectName;
-            Root = new PageMap(rootPageName, new List<string> { rootPageName });
+            Root = new RouteMap(rootPageName/*, new List<string> { rootPageName }*/);
             PathToRoot = pathToRoot;
             RootContaingNamespace = rootContainingNamespaceString;
         }
@@ -20,7 +20,7 @@ namespace StaticSharpProjectMapGenerator.Models
 
         //public string Version {get; set;} // TODO: in order to match source generator with VSCode extension
 
-        public PageMap Root { get; }
+        public RouteMap Root { get; }
 
         public string PathToRoot { get; }
 

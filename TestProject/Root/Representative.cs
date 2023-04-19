@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StaticSharpProjectMap.TestTarget.Root
+namespace StaticSharpProjectMap.TestTarget.Root2
 {
     [Representative]
     public class Representative : StaticSharp.Page
