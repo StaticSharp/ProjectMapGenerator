@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using StaticSharpProjectMapGenerator.Models;
 using System;
@@ -105,7 +106,7 @@ namespace StaticSharpProjectMapGenerator
             var fileSyntaxNode = classSyntaxReference.SyntaxTree.GetRoot();
 
             var classSyntaxNode = classSyntaxReference.GetSyntax();
-            var className = classSyntaxNode.ChildTokens().First(_ => _.RawKind == 8508); // TODO: 8508?!!! == IdentifierToken?
+            var className = classSyntaxNode.ChildTokens().First(_ => _.IsKind(SyntaxKind.IdentifierToken));
             //declarationSyntaxNode.GetAnnotatedTokens("")
 
 
@@ -127,7 +128,11 @@ namespace StaticSharpProjectMapGenerator
 
         protected SyntaxNode GetExclusiveWrapper(SyntaxNode target) {
             var sibblings = target.Parent.ChildNodes();
-            if (sibblings.Count() == 2 ) { // namespace Idendificator and self // TODO: exclude usings
+            var firstSibbling = sibblings.First();
+            if (sibblings.Count() == 2 && ( 
+                firstSibbling.IsKind(SyntaxKind.IdentifierName) || // Single namepace
+                firstSibbling.IsKind(SyntaxKind.QualifiedName) )) // Dot separated multiple namespaces
+            {
                 return GetExclusiveWrapper(target.Parent);
             } else {
                 return target;
