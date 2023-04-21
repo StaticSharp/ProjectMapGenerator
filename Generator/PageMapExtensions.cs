@@ -26,7 +26,7 @@ namespace StaticSharpProjectMapGenerator
         }
 
         // Returns last page in the path, new or existing
-        public static RouteMap GetOrCreatePageByPath(this ProjectMap _this, IEnumerable<string> pagePathSegments)
+        public static RouteMap GetOrCreateRouteByPath(this ProjectMap _this, IEnumerable<string> pagePathSegments)
         {
             if (!pagePathSegments.Any()) {
                 return null;

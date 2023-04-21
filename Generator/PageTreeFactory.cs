@@ -87,13 +87,15 @@ namespace StaticSharpProjectMapGenerator
                     Console.WriteLine(JsonSerializer.Serialize(pageSymbol));
                 }
 
-                var page = projectMap.GetOrCreatePageByPath(pagePathSegments);
-                page.Pages.Add( new PageMap {
+                var route = projectMap.GetOrCreateRouteByPath(pagePathSegments);
+                route.Pages.Add( new PageMap {
                     Name = pageSymbol.Name,
                     FilePath = filePath,
                     PageCsDescription = CreatePageCsDescription(pageSymbol)
                 });
             }
+
+            projectMap.ProjectCsDescription = CreateProjectCsDescription(compilation, projectMap);
 
             return projectMap;
         }
@@ -110,7 +112,7 @@ namespace StaticSharpProjectMapGenerator
             //declarationSyntaxNode.GetAnnotatedTokens("")
 
 
-            var exclussiveWrapper = GetExclusiveWrapper(classSyntaxNode);
+            var exclusiveWrapper = GetExclusiveWrapper(classSyntaxNode);
 
             var result = new PageCsDescription {
                 ClassDefinition = classSyntaxNode.ToFileTextRange(),
@@ -120,7 +122,7 @@ namespace StaticSharpProjectMapGenerator
 
                 FileScopedNamespace = null,
 
-                ExclusiveNamespaceWrapper = exclussiveWrapper.ToFileTextRange()
+                ExclusiveNamespaceWrapper = exclusiveWrapper.ToFileTextRange()
             };
 
             return result;
@@ -137,6 +139,36 @@ namespace StaticSharpProjectMapGenerator
             } else {
                 return target;
             }
+        }
+    
+        protected ProjectCsDescription CreateProjectCsDescription(Compilation compilation, ProjectMap projectMap)
+        {
+            List<FileTextRange> GetSyntaxNodeNsRanges(NamespaceDeclarationSyntax node)
+            {
+                // TODO: support file-scoped namespaces
+                var childNodes = node.ChildNodes();
+                var ranges = new List<FileTextRange> { childNodes.First(n => n.IsKind(SyntaxKind.QualifiedName) || n.IsKind(SyntaxKind.IdentifierName)).ToFileTextRange() };
+                ranges = ranges.Concat(childNodes.
+                    Where(n => n.IsKind(SyntaxKind.NamespaceDeclaration)).
+                    Select(ns => GetSyntaxNodeNsRanges((NamespaceDeclarationSyntax)ns)).
+                    SelectMany(x => x)).ToList();
+
+                return ranges;
+            }
+
+            var result = new ProjectCsDescription();
+
+            //TODO: exclude Root neighbors
+            foreach( var syntaxTree in compilation.SyntaxTrees.Where(st => st.FilePath.StartsWith(projectMap.PathToRoot))) {
+                var relativePath = syntaxTree.FilePath.Substring(projectMap.PathToRoot.Length+1); // +1 for path separator
+
+                var currentNamespaceNodes = syntaxTree.GetRoot().ChildNodes().Where(n => n.IsKind(SyntaxKind.NamespaceDeclaration));
+                var namespaceRanges = currentNamespaceNodes.Select(n => GetSyntaxNodeNsRanges((NamespaceDeclarationSyntax)n)).SelectMany(x => x);
+
+                result.NamespacesDeclarations[relativePath] = namespaceRanges;
+            }
+
+            return result;
         }
     }       
 

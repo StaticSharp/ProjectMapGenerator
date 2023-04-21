@@ -27,5 +27,7 @@ namespace StaticSharpProjectMapGenerator.Models
         public string RootContaingNamespace { get; }
 
         //public List<string> PageTypes { get; set; } = new List<string>();
+
+        public ProjectCsDescription ProjectCsDescription { get; set; }
     }
 }
