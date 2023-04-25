@@ -14,10 +14,8 @@ namespace StaticSharpProjectMapGenerator
         {
             var lineSpan = node.LineSpan();
             return new FileTextRange {
-                Start = node.Span.Start + 1, // TODO: +1  !!!!!
                 StartLine = lineSpan.StartLinePosition.Line,
                 StartColumn = lineSpan.StartLinePosition.Character,
-                End = node.Span.End + 1,
                 EndLine = lineSpan.EndLinePosition.Line,
                 EndColumn = lineSpan.EndLinePosition.Character
             };
@@ -30,10 +28,8 @@ namespace StaticSharpProjectMapGenerator
         {
             var lineSpan = node.LineSpan();
             return new FileTextRange {
-                Start = node.Span.Start + 1,
                 StartLine = lineSpan.StartLinePosition.Line,
                 StartColumn = lineSpan.StartLinePosition.Character,
-                End = node.Span.End + 1,
                 EndLine = lineSpan.EndLinePosition.Line,
                 EndColumn = lineSpan.EndLinePosition.Character
             };
@@ -46,10 +42,8 @@ namespace StaticSharpProjectMapGenerator
         {
             var lineSpan = node.LineSpan();
             return new FileTextRange {
-                Start = node.Span.Start + 1,
                 StartLine = lineSpan.StartLinePosition.Line,
                 StartColumn = lineSpan.StartLinePosition.Character,
-                End = node.Span.End + 1,
                 EndLine = lineSpan.EndLinePosition.Line,
                 EndColumn = lineSpan.EndLinePosition.Character
             };
