@@ -14,10 +14,17 @@ namespace StaticSharpProjectMapGenerator
 {
     public class PageTreeFactory
     {
+        protected PagesFinder _pagesFinder { get; set; }
+
+        public PageTreeFactory(PagesFinder pagesFinder) {
+            _pagesFinder = pagesFinder;
+        }
+
         public ProjectMap CreatePageTree(Compilation compilation) // TODO: review ProjectMap vs PageTree
         {
             //// finding root (by protonode)
 
+            // TODO: move to PageFinder?
             var protonode = compilation.GetSymbolsWithName("ProtoNode").SingleOrDefault();
             if (protonode == null) {
                 throw new Exception("ProtoNode not found or multiple ProtoNode's"); // TODO: notify user of exceptions
@@ -42,11 +49,14 @@ namespace StaticSharpProjectMapGenerator
             var projectMap = new ProjectMap(compilation.AssemblyName, rootNamespace.Name, pathToRoot, rootContainingNamespaceString);            
 
             //// find representatives
-            var allSymbols = compilation.GetSymbolsWithName(_ => true);
-            var typeSymbols = allSymbols.OfType<INamedTypeSymbol>(); // TODO: optimization possible - only visit rootNamespace descendents
-            var pageSymbols = typeSymbols.Where(_ => _.GetAttributes()
-                .Any(__ => __.AttributeClass.ConstructedFrom.ToString() == "StaticSharp.RepresentativeAttribute"));
+            //var allSymbols = compilation.GetSymbolsWithName(_ => true);
+            //var typeSymbols = allSymbols.OfType<INamedTypeSymbol>(); // TODO: optimization possible - only visit rootNamespace descendents
+            //var pageSymbols = typeSymbols.Where(_ => _.GetAttributes()
+            //    .Any(__ => __.AttributeClass.ConstructedFrom.ToString() == "StaticSharp.RepresentativeAttribute"));
             ///
+
+            var pageSymbols = _pagesFinder.GetBasePageDescendants().Where(_ => _.GetAttributes()
+                .Any(__ => __.AttributeClass.ConstructedFrom.ToString() == "StaticSharp.RepresentativeAttribute"));
 
             // construct tree
             foreach (var pageSymbol in pageSymbols) {

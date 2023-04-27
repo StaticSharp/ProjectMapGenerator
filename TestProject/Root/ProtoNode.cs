@@ -8,18 +8,34 @@ using System.Threading.Tasks;
 
 namespace StaticSharpProjectMap.TestTarget.Root
 {
-    public class ProtoNode : StaticSharp.Tree.Node
+    public enum Language
     {
-        public override StaticSharp.Tree.Node Root => throw new NotImplementedException();
+        En,
+        Ru,
+        Sp
+    }
 
-        public override StaticSharp.Tree.Node Parent => throw new NotImplementedException();
+    public abstract class ProtoNode :  StaticSharp.Tree.Node //MultilanguageProtoNode<Language>
+    {
+        // protected ProtoNode(Language language) : base(language)
+        // {
+        // }
+
+        public override MultilanguageProtoNode<Language> Parent => throw new NotImplementedException();
+
+        public override MultilanguageProtoNode<Language> Root => throw new NotImplementedException();
+
+        public override IEnumerable<MultilanguageProtoNode<Language>> Children => throw new NotImplementedException();
 
         public override Page? Representative => throw new NotImplementedException();
-
-        public override IEnumerable<StaticSharp.Tree.Node> Children => throw new NotImplementedException();
 
         public override string[] Path => throw new NotImplementedException();
 
         public override string Name => throw new NotImplementedException();
+
+        // public override MultilanguageProtoNode<Language> WithLanguage(Language language)
+        // {
+        //     throw new NotImplementedException();
+        // }
     }
 }

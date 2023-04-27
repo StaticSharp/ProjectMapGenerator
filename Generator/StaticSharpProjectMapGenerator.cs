@@ -27,13 +27,36 @@ namespace StaticSharpProjectMapGenerator
                 var targetProjectPath = context.AnalyzerConfigOptions.GlobalOptions.TryGetValue("build_property.projectdir", out var result) ? result : "";
                 var projectMapFilePath = Path.Combine(targetProjectPath, "ProjectMap.json");
 
-                //var projectMap = new ProjectMap {
-                //    Name = context.Compilation.AssemblyName
-                //};
+                var ssAnalyzer = new PagesFinder(context.Compilation);
 
-                var pageTreeFactory = new PageTreeFactory();
+                var pageTreeFactory = new PageTreeFactory(ssAnalyzer);
                 var projectMap = pageTreeFactory.CreatePageTree(context.Compilation);
 
+                // append base pages
+                var pages = ssAnalyzer.GetBasePageDescendants();
+                var basePages = pages.Where(_ => _.IsAbstract).ToList();
+                basePages.Add(ssAnalyzer.GetPrimalPageSymbol());
+                projectMap.PageTypes = basePages.Select(p => p.ToString()).ToList();
+
+                // append languages
+                // TODO: move to PageFinder?
+                var protonode = context.Compilation.GetSymbolsWithName("ProtoNode").SingleOrDefault();
+                var multilanguageProtonode = context.Compilation.GetTypesByMetadataName("StaticSharp.MultilanguageProtoNode`1").First(); // TODO: First()
+
+                // TODO: indirect nesting, wrap, add checks
+                var temp = SymbolEqualityComparer.Default.Equals(((INamedTypeSymbol)protonode).BaseType.ConstructedFrom, multilanguageProtonode);
+                if (temp)
+                {
+                    var currentMultilanguageProtonode = ((INamedTypeSymbol)protonode).BaseType;
+                    var languageEnum = currentMultilanguageProtonode.TypeArguments.First();
+                    var languagesSyntaxNodes = languageEnum.DeclaringSyntaxReferences.First().GetSyntax().ChildNodes();
+
+                    projectMap.Languages = languagesSyntaxNodes.Where(s => s.IsKind(SyntaxKind.EnumMemberDeclaration)).Select(s => s.ToString()).ToList();
+                }
+                else
+                {
+                    projectMap.Languages = new List<string> { "" };
+                }
 
                 var projectMapJson = JsonSerializer.Serialize(projectMap);
 
