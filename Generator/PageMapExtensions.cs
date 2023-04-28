@@ -1,4 +1,4 @@
-﻿using StaticSharpProjectMapGenerator.Models;
+﻿using StaticSharpProjectMapGenerator.ContractModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

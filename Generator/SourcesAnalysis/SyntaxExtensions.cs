@@ -1,10 +1,10 @@
 ﻿using Microsoft.CodeAnalysis;
-using StaticSharpProjectMapGenerator.Models;
+using StaticSharpProjectMapGenerator.ContractModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace StaticSharpProjectMapGenerator
+namespace StaticSharpProjectMapGenerator.SourcesAnalysis
 {
     public static class SyntaxExtensions
     {
@@ -13,7 +13,8 @@ namespace StaticSharpProjectMapGenerator
         public static FileTextRange ToFileTextRange(this SyntaxNode node)
         {
             var lineSpan = node.LineSpan();
-            return new FileTextRange {
+            return new FileTextRange
+            {
                 StartLine = lineSpan.StartLinePosition.Line,
                 StartColumn = lineSpan.StartLinePosition.Character,
                 EndLine = lineSpan.EndLinePosition.Line,
@@ -27,7 +28,8 @@ namespace StaticSharpProjectMapGenerator
         public static FileTextRange ToFileTextRange(this SyntaxReference node)
         {
             var lineSpan = node.LineSpan();
-            return new FileTextRange {
+            return new FileTextRange
+            {
                 StartLine = lineSpan.StartLinePosition.Line,
                 StartColumn = lineSpan.StartLinePosition.Character,
                 EndLine = lineSpan.EndLinePosition.Line,
@@ -41,7 +43,8 @@ namespace StaticSharpProjectMapGenerator
         public static FileTextRange ToFileTextRange(this SyntaxToken node)
         {
             var lineSpan = node.LineSpan();
-            return new FileTextRange {
+            return new FileTextRange
+            {
                 StartLine = lineSpan.StartLinePosition.Line,
                 StartColumn = lineSpan.StartLinePosition.Character,
                 EndLine = lineSpan.EndLinePosition.Line,

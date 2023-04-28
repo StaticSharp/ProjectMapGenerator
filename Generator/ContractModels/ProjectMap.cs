@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace StaticSharpProjectMapGenerator.Models
+namespace StaticSharpProjectMapGenerator.ContractModels
 {
     public class ProjectMap
     {

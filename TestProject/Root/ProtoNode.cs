@@ -15,11 +15,18 @@ namespace StaticSharpProjectMap.TestTarget.Root
         Sp
     }
 
-    public abstract class ProtoNode :  StaticSharp.Tree.Node //MultilanguageProtoNode<Language>
+    public abstract class BaseProtoNode<T2, T> : MultilanguageProtoNode<T> where T: struct, Enum
     {
-        // protected ProtoNode(Language language) : base(language)
-        // {
-        // }
+        protected BaseProtoNode(T language) : base(language)
+        {
+        }
+    }
+
+    public abstract class ProtoNode : BaseProtoNode<int, Language> //StaticSharp.Tree.Node //
+    {
+        protected ProtoNode(Language language) : base(language)
+        {
+        }
 
         public override MultilanguageProtoNode<Language> Parent => throw new NotImplementedException();
 
@@ -33,9 +40,9 @@ namespace StaticSharpProjectMap.TestTarget.Root
 
         public override string Name => throw new NotImplementedException();
 
-        // public override MultilanguageProtoNode<Language> WithLanguage(Language language)
-        // {
-        //     throw new NotImplementedException();
-        // }
+        public override MultilanguageProtoNode<Language> WithLanguage(Language language)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

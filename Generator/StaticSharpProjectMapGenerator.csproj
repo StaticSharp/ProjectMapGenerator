@@ -14,21 +14,14 @@
         <!--DebugType>embedded</DebugType-->
         <PackageVersion>0.1.0</PackageVersion> <!--overriden in CI-->
     </PropertyGroup>
-
-    <ItemGroup>
-        <!--None Include="..\README.md" Pack="true" PackagePath="\"/>
-        <None Include="..\LICENSE" Pack="true" PackagePath="\"/-->
-        <!--PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" /-->
-        <!-- TODO: Do we really need sourcelink for generator?-->
-    </ItemGroup>
     
     <ItemGroup>
         <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.3">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.4.0"/>
-        <PackageReference Include="System.Text.Json" Version="5.0.1" PrivateAssets="all"/>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.4.0" />
+        <PackageReference Include="System.Text.Json" Version="5.0.1" PrivateAssets="all" />
     </ItemGroup>
 
     <!-- Further is needed to resolve generator dependenies on nugets-->

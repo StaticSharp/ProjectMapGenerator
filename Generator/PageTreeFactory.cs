@@ -1,7 +1,8 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using StaticSharpProjectMapGenerator.Models;
+using StaticSharpProjectMapGenerator.ContractModels;
+using StaticSharpProjectMapGenerator.SourcesAnalysis;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,25 +15,23 @@ namespace StaticSharpProjectMapGenerator
 {
     public class PageTreeFactory
     {
-        protected PagesFinder _pagesFinder { get; set; }
+        protected StaticSharpSymbols _staticSharpSymbols { get; set; }
 
-        public PageTreeFactory(PagesFinder pagesFinder) {
-            _pagesFinder = pagesFinder;
+        public PageTreeFactory(StaticSharpSymbols pagesFinder) {
+            _staticSharpSymbols = pagesFinder;
         }
 
         public ProjectMap CreatePageTree(Compilation compilation) // TODO: review ProjectMap vs PageTree
         {
-            //// finding root (by protonode)
+            // finding root (by protonode)
 
-            // TODO: move to PageFinder?
-            var protonode = compilation.GetSymbolsWithName("ProtoNode").SingleOrDefault();
-            if (protonode == null) {
+            if (_staticSharpSymbols.Protonode == null) {
                 throw new Exception("ProtoNode not found or multiple ProtoNode's"); // TODO: notify user of exceptions
             }
 
-            var rootNamespace = protonode.ContainingNamespace;
+            var rootNamespace = _staticSharpSymbols.Protonode.ContainingNamespace;
             // TODO: relative? partial?
-            var rootFilePath = protonode.DeclaringSyntaxReferences.First().GetSyntax().SyntaxTree.FilePath;
+            var rootFilePath = _staticSharpSymbols.Protonode.DeclaringSyntaxReferences.First().GetSyntax().SyntaxTree.FilePath;
             var pathToRoot = Path.GetDirectoryName(Path.GetDirectoryName(rootFilePath));  // TODO: remove this from others files names?
 
             var rootContainingNamespaces = new List<string>();
@@ -48,14 +47,8 @@ namespace StaticSharpProjectMapGenerator
             var rootContainingNamespaceString = string.Join(".", rootContainingNamespaces);
             var projectMap = new ProjectMap(compilation.AssemblyName, rootNamespace.Name, pathToRoot, rootContainingNamespaceString);            
 
-            //// find representatives
-            //var allSymbols = compilation.GetSymbolsWithName(_ => true);
-            //var typeSymbols = allSymbols.OfType<INamedTypeSymbol>(); // TODO: optimization possible - only visit rootNamespace descendents
-            //var pageSymbols = typeSymbols.Where(_ => _.GetAttributes()
-            //    .Any(__ => __.AttributeClass.ConstructedFrom.ToString() == "StaticSharp.RepresentativeAttribute"));
-            ///
-
-            var pageSymbols = _pagesFinder.GetBasePageDescendants().Where(_ => _.GetAttributes()
+            // find representatives
+            var pageSymbols = _staticSharpSymbols.PrimalPageDescendants.Where(_ => _.GetAttributes()
                 .Any(__ => __.AttributeClass.ConstructedFrom.ToString() == "StaticSharp.RepresentativeAttribute"));
 
             // construct tree
@@ -120,7 +113,6 @@ namespace StaticSharpProjectMapGenerator
             var classSyntaxNode = classSyntaxReference.GetSyntax();
             var className = classSyntaxNode.ChildTokens().First(_ => _.IsKind(SyntaxKind.IdentifierToken));
             //declarationSyntaxNode.GetAnnotatedTokens("")
-
 
             var exclusiveWrapper = GetExclusiveWrapper(classSyntaxNode);
 
