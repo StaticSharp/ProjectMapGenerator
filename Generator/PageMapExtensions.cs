@@ -1,10 +1,10 @@
-﻿using StaticSharpProjectMapGenerator.ContractModels;
+﻿using ProjectMapSg.ContractModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace StaticSharpProjectMapGenerator
+namespace ProjectMapSg
 {
     public static class PageMapExtensions
     {

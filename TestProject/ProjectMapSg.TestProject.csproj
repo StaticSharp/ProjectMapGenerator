@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="StaticSharp.Core" Version="0.1.41" />
-    <ProjectReference Include="..\Generator\StaticSharpProjectMapGenerator.csproj" OutputItemType="Analyzer" />
+    <ProjectReference Include="..\Generator\ProjectMapSg.csproj" OutputItemType="Analyzer" />
       <!--ReferenceOutputAssembly="true"-->
   </ItemGroup>
 

@@ -10,7 +10,7 @@
     <ItemGroup>
         <PackageReference Include="StaticSharp.RoslynSourceGeneratorLauncher" Version="0.1.1" />
         <!--ProjectReference Include="..\..\RoslynSourceGeneratorLauncher\RoslynSourceGeneratorLauncher\RoslynSourceGeneratorLauncher.csproj" /-->
-        <ProjectReference Include="..\Generator\StaticSharpProjectMapGenerator.csproj" />
+        <ProjectReference Include="..\Generator\ProjectMapSg.csproj" />
     </ItemGroup>
 
 </Project>

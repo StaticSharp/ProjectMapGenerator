@@ -2,19 +2,19 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.CSharp;
-using StaticSharpProjectMapGenerator.ContractModels;
+using ProjectMapSg.ContractModels;
 using System;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Security.Cryptography.X509Certificates;
 using System.Collections.Generic;
-using StaticSharpProjectMapGenerator.SourcesAnalysis;
+using ProjectMapSg.SourcesAnalysis;
 
-namespace StaticSharpProjectMapGenerator
+namespace ProjectMapSg
 {
     [Microsoft.CodeAnalysis.Generator]
-    public class StaticSharpProjectMapGenerator : ISourceGenerator
+    public class ProjectMapSg : ISourceGenerator
     {
         public void Initialize(GeneratorInitializationContext context)
         {

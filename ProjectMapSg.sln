@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33122.133
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StaticSharpProjectMapGenerator", "Generator\StaticSharpProjectMapGenerator.csproj", "{F65F415F-C37A-4901-88D8-6937D06F3905}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectMapSg", "Generator\ProjectMapSg.csproj", "{F65F415F-C37A-4901-88D8-6937D06F3905}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StaticSharpProjectMapGenerator.Launcher", "Launcher\StaticSharpProjectMapGenerator.Launcher.csproj", "{A38EF3AC-F7A4-4714-9078-C5AC02987712}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectMapSg.Launcher", "Launcher\ProjectMapSg.Launcher.csproj", "{A38EF3AC-F7A4-4714-9078-C5AC02987712}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StaticSharpProjectMapGenerator.TestTarget", "TestProject\StaticSharpProjectMapGenerator.TestProject.csproj", "{21A4A69A-54FE-409E-BE58-F29E66780E95}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectMapSg.TestTarget", "TestProject\ProjectMapSg.TestProject.csproj", "{21A4A69A-54FE-409E-BE58-F29E66780E95}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
