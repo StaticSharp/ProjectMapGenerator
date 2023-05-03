@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace StaticSharpProjectMap.TestTarget.Root.About
 {
     [Representative]
-    public class Representative : StaticSharp.Page
+    public partial class Representative : StaticSharp.Page
     {
         public override string PageLanguage => throw new NotImplementedException();
 
@@ -18,8 +18,6 @@ namespace StaticSharpProjectMap.TestTarget.Root.About
         public override object? MainVisual => throw new NotImplementedException();
 
         public override Inlines? Description => throw new NotImplementedException();
-
-        public override Node VirtualNode => throw new NotImplementedException();
 
         public override Blocks UnmanagedChildren => throw new NotImplementedException();
     }

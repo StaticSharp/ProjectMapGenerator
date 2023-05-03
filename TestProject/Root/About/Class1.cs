@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace StaticSharpProjectMap.TestTarget.Root.About
 {
-    [Representative]
     internal class Class1
     {
     }

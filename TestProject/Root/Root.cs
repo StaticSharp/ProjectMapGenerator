@@ -1,19 +1,11 @@
-﻿using StaticSharp;
-using StaticSharp.Tree;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
+using StaticSharp;
 
-namespace StaticSharpProjectMap.TestTarget.Root.SomeNewComponent
-{
+namespace StaticSharpProjectMap.TestTarget.Root {
+
     [Representative]
-    public class Representative : StaticSharp.Page
+    public partial class Root : StaticSharp.Page
     {
-
-
         public override string PageLanguage => throw new NotImplementedException();
 
         public override string Title => throw new NotImplementedException();
@@ -22,9 +14,6 @@ namespace StaticSharpProjectMap.TestTarget.Root.SomeNewComponent
 
         public override Inlines? Description => throw new NotImplementedException();
 
-        public override Node VirtualNode => throw new NotImplementedException();
-
         public override Blocks UnmanagedChildren => throw new NotImplementedException();
     }
 }
-
