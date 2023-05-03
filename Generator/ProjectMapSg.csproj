@@ -5,16 +5,19 @@
     </PropertyGroup>
     
     <PropertyGroup>
-        <PackageId>StaticSharp.StaticSharpProjectMap.SourceGenerator</PackageId>
-        <!--PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageLicenseFile>LICENSE</PackageLicenseFile-->
-        <!--PublishRepositoryUrl>true</PublishRepositoryUrl>
-        <EmbedUntrackedSources>true</EmbedUntrackedSources-->
-        <!-- TODO: Do we really need sourcelink for generator?-->
-        <!--DebugType>embedded</DebugType-->
+        <PackageId>StaticSharp.ProjectMapSg</PackageId>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
         <PackageVersion>0.1.0</PackageVersion> <!--overriden in CI-->
     </PropertyGroup>
-    
+
+    <ItemGroup>
+        <None Include="..\README.md" Pack="true" PackagePath="\"/>
+        <None Include="..\LICENSE" Pack="true" PackagePath="\"/>
+    </ItemGroup>
+
     <ItemGroup>
         <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.3">
             <PrivateAssets>all</PrivateAssets>
