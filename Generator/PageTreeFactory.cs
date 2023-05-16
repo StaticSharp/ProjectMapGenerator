@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
@@ -82,6 +83,7 @@ namespace ProjectMapSg
                 pagePathSegments = pagePathSegments.Prepend(rootNamespace.Name);
 
                 // TODO: relative? partial?
+
                 var filePath = pageSymbol.DeclaringSyntaxReferences.First().GetSyntax().SyntaxTree.FilePath;
 
                 if (string.IsNullOrEmpty(pageSymbol.Name)) {
@@ -91,10 +93,15 @@ namespace ProjectMapSg
                 }
 
                 var route = projectMap.GetOrCreateRouteByPath(pagePathSegments);
-                route.Pages.Add( new PageMap {
+                route.Pages.Add(new PageMap
+                {
                     Name = pageSymbol.Name,
                     FilePath = filePath,
-                    PageCsDescription = CreatePageCsDescription(pageSymbol)
+                    PageCsDescription = CreatePageCsDescription(pageSymbol),
+
+                    ExpectedFilePath = Path.Combine(projectMap.PathToRoot, Path.Combine(pagePathSegments.ToArray()), $"{pageSymbol.Name}.cs"),
+                    Route = route,
+                    RoslynSymbol = pageSymbol
                 });
             }
 

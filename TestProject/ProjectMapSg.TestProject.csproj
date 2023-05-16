@@ -8,10 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="StaticSharp.Core" Version="0.1.68" />
+    <PackageReference Include="StaticSharp.Core" Version="0.1.73" />
       <ProjectReference Include="..\Generator\ProjectMapSg.csproj" OutputItemType="Analyzer" />
-      <!--PackageReference Include="StaticSharp.ProjectMapSg" Version="0.1.2" /-->
-      <PackageReference Include="StaticSharp.RoutingSg" Version="0.1.68" />
+	  <!--PackageReference Include="StaticSharp.ProjectMapSg" Version="0.1.3" /-->
+	  <!--PackageReference Include="StaticSharp.RoutingSg" Version="0.1.68" /-->
   </ItemGroup>
 
 </Project>

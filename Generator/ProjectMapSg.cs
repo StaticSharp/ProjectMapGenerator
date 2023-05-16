@@ -42,6 +42,9 @@ namespace ProjectMapSg
                 // append languages
                 projectMap.Languages = staticSharpSymbols.LanguageEnum?.MemberNames.ToList() ?? new List<string> { "" };
 
+                // fill in page errors
+                StaticSharpProjectValidator.Validate(projectMap, context.Compilation);
+
                 var projectMapJson = JsonSerializer.Serialize(projectMap);
                 File.WriteAllText(projectMapFilePath, projectMapJson);
             }
